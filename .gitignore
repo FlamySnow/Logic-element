@@ -29,6 +29,5 @@ bazel-*
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
