@@ -6,7 +6,7 @@ namespace Program3 {
     enum Type {input, output};
 
     struct Clamp {
-        Type t;//тип - входная или выходная
+        int t;//тип - входная или выходная
         //количество соединений, для входной - не больше 1, для выходной - не больше 3
         //по умолчанию - 0
         short int ports;

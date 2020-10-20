@@ -97,14 +97,14 @@ namespace Program3 {
     int LogElement::connect (int n) {
         corrNumber(n);
         if ((clmps[n - 1].t == input && clmps[n - 1].ports == 1) || (clmps[n - 1].t == output && clmps[n - 1].ports == 3))
-            throw std::invalid_argument("Impossible to add port");
+            throw std::invalid_argument("Impossible to connect port!");
         return ++clmps[n - 1].ports;
     }
 
     int LogElement::disconnect (int n) {
         corrNumber(n);
         if (clmps[n - 1].ports < 1)
-            throw std::invalid_argument("Impossible to disconnect port");
+            throw std::invalid_argument("Impossible to disconnect port!");
         if (clmps[n - 1].ports == 1)
             clmps[n - 1].signal = 'X';
         return --clmps[n - 1].ports;
