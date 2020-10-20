@@ -17,14 +17,13 @@ namespace Program3 {
     private:
         static const int SZ = 10;//максимальное количество клемм
         int num;//количество клемм
-        Clamp clmps[SZ];
+        Clamp clmps[SZ];//массив описателей клемм
         void corrSignal ();
         void corrNumber (int n);
     public:
         LogElement();//пустой конструктор, лог. эл. - инвертор
         LogElement(int n, int m);//инициализация кол-вом входных и выходных клемм
         LogElement(int N);//инициализация массивом клемм заданной длины
-        ~LogElement() {};
         friend std::istream & operator >> (std::istream &, LogElement &);
         friend std::ostream & operator << (std::ostream &, const LogElement &);
         void operator() (int n, char st);

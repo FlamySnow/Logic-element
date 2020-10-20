@@ -12,7 +12,7 @@ namespace Program3 {
     }
 
     LogElement::LogElement(int n, int m) :num(0){
-        if ((n + m) > SZ || n < 0 ||m < 0)
+        if ((n + m) > SZ || n < 0 || m < 0 || (n == 0 && m == 0))
             throw std::invalid_argument("Incorrect number of clamps!");
         num = n + m;
         for (int i = 0; i < n; i++){
@@ -93,12 +93,12 @@ namespace Program3 {
         corrNumber(n);
         return clmps[n - 1].signal;
     }
-    
+
     int LogElement::connect (int n) {
         corrNumber(n);
         if ((clmps[n - 1].t == input && clmps[n - 1].ports == 1) || (clmps[n - 1].t == output && clmps[n - 1].ports == 3))
             throw std::invalid_argument("Impossible to add port");
-        return ++clmps[n].ports;
+        return ++clmps[n - 1].ports;
     }
 
     int LogElement::disconnect (int n) {
@@ -113,6 +113,16 @@ namespace Program3 {
     LogElement & LogElement::operator += (const Clamp &c) {
         if (num == SZ)
             throw std::invalid_argument("Impossible to add clamp!");
+        if (c.t != input && c.t != output)
+            throw std::invalid_argument("Incorrect type!");
+        if (c.signal != '0' && c.signal != '1' && c.signal != 'X')
+            throw std::invalid_argument("Incorrect statement!");
+        if (c.t == input && c.ports > 1)
+            throw std::invalid_argument("Too many ports for input clamp!");
+        if (c.t == output && c.ports > 3)
+            throw std::invalid_argument("Too many ports for output clamp!");
+        if (c.ports < 0)
+            throw std::invalid_argument("Incorrect number of ports!");
         clmps[num] = c;
         num++;
         return *this;
