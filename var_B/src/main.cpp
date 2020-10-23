@@ -1,4 +1,4 @@
-#include "C:/Users/sweet/Desktop/projects/Logic-element/lib/logic_element.h"
+#include "C:/Users/sweet/Desktop/projects/Logic-element/var_B/lib/logic_element.h"
 
 using namespace Program3;
 
