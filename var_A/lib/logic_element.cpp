@@ -1,7 +1,6 @@
 #include "logic_element.h"
 
-namespace Program3 {
-
+namespace var_A {
     LogElement::LogElement() :num(2){//инвертор имеет две клеммы: входную и выходную в неопределённом состоянии
         clmps[0].t = input;
         clmps[0].signal = 'X';
@@ -13,34 +12,18 @@ namespace Program3 {
 
     LogElement::LogElement(int n, int m) :num(0){
         if ((n + m) > SZ || n < 0 || m < 0 || (n == 0 && m == 0))
-            throw std::invalid_argument("Incorrect number of clamps!");
+            throw std::invalid_argument("Incorrect numbers of clamps!");
         num = n + m;
-        for (int i = 0; i < n; i++){
-            clmps[i].t = input;
-            clmps[i].signal = 'X';
-            clmps[i].ports = 0;
-        }
-        for (int i = n; i < m; i++){
-            clmps[i].t = output;
-            clmps[i].signal = 'X';
-            clmps[i].ports = 0;
-        }
+        initInput(0, n);
+        initOutput(n, m);
     }
 
     LogElement::LogElement(int N) :num(0){
         if (N > SZ || N < 1)
             throw std::invalid_argument("Incorrect number of clamps!");
         num = N;
-        for (int i = 0; i < N/2; i++){
-            clmps[i].t = input;
-            clmps[i].signal = 'X';
-            clmps[i].ports = 0;
-        }
-        for (int i = N/2; i < N; i++){
-            clmps[i].t = output;
-            clmps[i].signal = 'X';
-            clmps[i].ports = 0;
-        }
+        initInput(0, N/2);
+        initOutput(N/2, N);
     }
 
     void LogElement::corrSignal(){
@@ -51,45 +34,63 @@ namespace Program3 {
     }
 
     void LogElement::corrNumber (int n) {
-        if (n < 0 || n > num)
+        if (n < 1 || n > num)
             throw std::invalid_argument("Incorrect number");
     }
 
-    std::istream & operator >> (std::istream &s, LogElement &le){
-        for (int i = 0; i < le.num; i++){
-            s >> le.clmps[i].signal;
+    void LogElement::initInput (int b, int e) {
+        for (int i = b; i < e; i++){
+            clmps[i].t = input;
+            clmps[i].signal = 'X';
+            clmps[i].ports = 0;
         }
-        if (s.good()){
-            le.corrSignal();
+    }
+
+    void LogElement::initOutput (int b, int e) {
+        for (int i = b; i < e; i++){
+            clmps[i].t = output;
+            clmps[i].signal = 'X';
+            clmps[i].ports = 0;
+        }
+    }
+
+    int LogElement::enterSttmnts () {
+        for (int i = 0; i < num; i++){
+            std::cin >> clmps[i].signal;
+        }
+        if (std::cin.good()){
+            corrSignal();
         }
         else {
-            s.setstate(std::ios::failbit);
+            return 0;
         }
-        return s;
+        return 1;
     }
 
-    std::ostream & operator << (std::ostream &s, const LogElement &le){
-        s << "  *********  " << std::endl;
-        s << "  *       *  " << std::endl;
-        for (int i = 0; i < le.num; i++) {
-            if (le.clmps[i].t == input)
-                s << le.clmps[i].signal << " " << le.clmps[i].ports << "       *  " << std::endl;
-            if (le.clmps[i].t == output)
-                s << "  *       " << le.clmps[i].ports << " " << le.clmps[i].signal << std::endl;
+    void LogElement::showLE () {
+        if (num == 0) {
+            throw std::invalid_argument("There are no clamps in your logic element!");
         }
-        s << "  *       *  " << std::endl;
-        s << "  *********  " << std::endl;
-        return s;
+        std::cout << "  *********  " << std::endl;
+        std::cout << "  *       *  " << std::endl;
+        for (int i = 0; i < num; i++) {
+            if (clmps[i].t == input)
+                std::cout << clmps[i].signal << " " << clmps[i].ports << "       *  " << std::endl;
+            if (clmps[i].t == output)
+                std::cout << "  *       " << clmps[i].ports << " " << clmps[i].signal << std::endl;
+        }
+        std::cout << "  *       *  " << std::endl;
+        std::cout << "  *********  " << std::endl;
     }
 
-    void LogElement::operator() (int n, char st){
+    void LogElement::enterSgnl (int n, char st) {
         corrNumber(n);
         if (st != '0' && st != '1' && st != 'X')
             throw std::invalid_argument("Incorrect statement");
         clmps[n - 1].signal = st;
     }
 
-    char LogElement::operator[] (int n) {
+    char LogElement::getSgnl (int n) {
         corrNumber(n);
         return clmps[n - 1].signal;
     }
@@ -110,7 +111,7 @@ namespace Program3 {
         return --clmps[n - 1].ports;
     }
 
-    LogElement & LogElement::operator += (const Clamp &c) {
+    LogElement & LogElement::addClamp (const Clamp &c) {
         if (num == SZ)
             throw std::invalid_argument("Impossible to add clamp!");
         if (c.t != input && c.t != output)
