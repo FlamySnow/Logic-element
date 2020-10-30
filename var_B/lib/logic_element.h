@@ -20,6 +20,8 @@ namespace Program3 {
         Clamp clmps[SZ];//массив описателей клемм
         void corrSignal ();//проверка состояний сигналов на корректность
         void corrNumber (int n);//проверка введённого номера клеммы
+        void initInput (int b, int e);//инициализация входных клемм
+        void initOutput (int b, int e);//инициализация выходных клемм
     public:
         LogElement();//пустой конструктор, лог. эл. - инвертор
         LogElement(int n, int m);//инициализация кол-вом входных и выходных клемм
@@ -32,6 +34,15 @@ namespace Program3 {
         int disconnect (int n);//уменьшение соединений клеммы
         LogElement & operator += (const Clamp &c);//добавление клеммы к логическому элементу
     };
+
+    template <class T>
+    int getNum (T &a) {
+        std::cin >> a;
+        if (!std::cin.good()){
+            return 0;
+        }
+        return 1;
+    }
 }
 
 #endif //_LOGIC_ELEMENT_H

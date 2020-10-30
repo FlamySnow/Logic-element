@@ -28,7 +28,7 @@ namespace var_A {
 
     void LogElement::corrSignal(){
         for (int i = 0; i < num; i++) {
-            if (clmps[i].signal != '0' && clmps[i].signal != '1' && clmps[i].signal && 'X')
+            if (clmps[i].signal != '0' && clmps[i].signal != '1' && clmps[i].signal != 'X')
                 throw std::invalid_argument("Incorrect state of signal!");
         }
     }

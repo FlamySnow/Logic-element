@@ -13,59 +13,107 @@ int main() {
         std::cout << "Choose an operation:" << std::endl;
         std::cout << "0. Quit;" << std::endl;
         std::cout << "1. Enter statements of all clamps;" << std::endl;
-        std::cout << "2. Show a logic element;" << std::endl;
-        std::cout << "3. Enter statement of a clamp by its number;" << std::endl;
-        std::cout << "4. Get statement of a clamp by its number;" << std::endl;
-        std::cout << "5. Increase number of ports of a clamp by one;" << std::endl;
-        std::cout << "6. Decrease number of ports of a clamp by one;" << std::endl;
-        std::cout << "7. Add clamp to a logic element." << std::endl;
+        std::cout << "2. Enter statement of a clamp by its number;" << std::endl;
+        std::cout << "3. Get statement of a clamp by its number;" << std::endl;
+        std::cout << "4. Increase number of ports of a clamp by one;" << std::endl;
+        std::cout << "5. Decrease number of ports of a clamp by one;" << std::endl;
+        std::cout << "6. Add clamp to a logic element." << std::endl;
         std::cout << "Enter operation code: --> ";
-        std::cin >> key1;
+        if (!getNum(key1)) {
+            std::cout << "Incorrect data!" << std::endl;
+            return 0;
+        }
         if (key1 == 0)
             break;
         try {
             switch (key1) {
                 case 1: {
+                    std::cout << "Enter number of clamps: -->";
+                    if (!getNum(n)) {
+                        std::cout << "Incorrect data!" << std::endl;
+                        return 0;
+                    }
+                    LogElement le(n);
+                    std::cout << le;
                     std::cout << "Enter values of signal statements: 0, 1 or X for undefined statement." << std::endl;
                     std::cin >> le;
+                    std::cout << le;
                 }
                 break;
                 case 2: {
-                    std::cout << "Your logic element is:" << std::endl;
-                    std::cout << le << std::endl;
-                }
-                break;
-                case 3: {
+                    std::cout << "Enter number of clamps: -->";
+                    if (!getNum(n)) {
+                        std::cout << "Incorrect data!" << std::endl;
+                        return 0;
+                    }
+                    LogElement le(n);
+                    std::cout << le;
                     std::cout << "Enter number of a clamp: --> ";
-                    std::cin >> n;
+                    if (!getNum(n)) {
+                        std::cout << "Incorrect data!" << std::endl;
+                        return 0;
+                    }
                     std::cout << "Enter signal statement: 0, 1 or X --> ";
                     std::cin >> st;
                     le(n, st);
+                    std::cout << le;
                 }
                 break;
-                case 4: {
+                case 3: {
+                    std::cout << "Enter number of clamps: -->";
+                    if (!getNum(n)) {
+                        std::cout << "Incorrect data!" << std::endl;
+                        return 0;
+                    }
+                    LogElement le(n);
+                    std::cout << "Enter values of signal statements: 0, 1 or X for undefined statement." << std::endl;
+                    std::cin >> le;
+                    std::cout << le;
                     std::cout << "Enter number of a clamp: --> ";
-                    std::cin >> n;
+                    if (!getNum(n)) {
+                        std::cout << "Incorrect data!" << std::endl;
+                        return 0;
+                    }
                     std::cout << "Signal: " << le[n] << std::endl;
                 }
                 break;
-                case 5: {
+                case 4: {
+                    LogElement le;
+                    std::cout << le;
                     std::cout << "Enter number of a clamp: --> ";
-                    std::cin >> n;
+                    if (!getNum(n)) {
+                        std::cout << "Incorrect data!" << std::endl;
+                        return 0;
+                    }
                     le.connect(n);
+                    std::cout << le;
+                }
+                break;
+                case 5: {
+                    LogElement le;
+                    le.connect(1);
+                    std::cout << le;
+                    std::cout << "Enter number of a clamp: --> ";
+                    if (!getNum(n)) {
+                        std::cout << "Incorrect data!" << std::endl;
+                        return 0;
+                    }
+                    le.disconnect(n);
+                    std::cout << le;
                 }
                 break;
                 case 6: {
-                    std::cout << "Enter number of a clamp: --> ";
-                    std::cin >> n;
-                    le.disconnect(n);
-                }
-                break;
-                case 7: {
+                    LogElement le;
                     std::cout << "Enter type of clamp: 0 for input, 1 for output --> ";
-                    std::cin >> cl.t;
+                    if (!getNum(cl.t)) {
+                        std::cout << "Incorrect data!" << std::endl;
+                        return 0;
+                    }
                     std::cout << "Enter number of ports: not above 1 for input clamp and not above 3 for output clamp --> ";
-                    std::cin >> cl.ports;
+                    if (!getNum(cl.ports)) {
+                        std::cout << "Incorrect data!" << std::endl;
+                        return 0;
+                    }
                     if (cl.ports != 0) {
                         std::cout << "Enter signal statement: 0, 1 or X --> ";
                         std::cin >> cl.signal;
@@ -73,6 +121,7 @@ int main() {
                     else
                         cl.signal = 'X';
                     le += cl;
+                    std::cout << le;
                 }
                 break;
                 default: {

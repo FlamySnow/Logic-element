@@ -15,28 +15,28 @@ namespace Program3 {
         if ((n + m) > SZ || n < 0 || m < 0 || (n == 0 && m == 0))
             throw std::invalid_argument("Incorrect number of clamps!");
         num = n + m;
-        for (int i = 0; i < n; i++){
-            clmps[i].t = input;
-            clmps[i].signal = 'X';
-            clmps[i].ports = 0;
-        }
-        for (int i = n; i < m; i++){
-            clmps[i].t = output;
-            clmps[i].signal = 'X';
-            clmps[i].ports = 0;
-        }
+        initInput(0, n);
+        initOutput(n, m);
     }
 
     LogElement::LogElement(int N) :num(0){
         if (N > SZ || N < 1)
             throw std::invalid_argument("Incorrect number of clamps!");
         num = N;
-        for (int i = 0; i < N/2; i++){
+        initInput(0, N/2);
+        initOutput(N/2, N);
+    }
+
+    void LogElement::initInput (int b, int e) {
+        for (int i = b; i < e; i++){
             clmps[i].t = input;
             clmps[i].signal = 'X';
             clmps[i].ports = 0;
         }
-        for (int i = N/2; i < N; i++){
+    }
+
+    void LogElement::initOutput (int b, int e) {
+        for (int i = b; i < e; i++){
             clmps[i].t = output;
             clmps[i].signal = 'X';
             clmps[i].ports = 0;
@@ -45,7 +45,7 @@ namespace Program3 {
 
     void LogElement::corrSignal(){
         for (int i = 0; i < num; i++) {
-            if (clmps[i].signal != '0' && clmps[i].signal != '1' && clmps[i].signal && 'X')
+            if (clmps[i].signal != '0' && clmps[i].signal != '1' && clmps[i].signal != 'X')
                 throw std::invalid_argument("Incorrect state of signal!");
         }
     }
