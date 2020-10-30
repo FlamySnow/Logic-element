@@ -51,7 +51,7 @@ namespace Program3 {
     }
 
     void LogElement::corrNumber (int n) {
-        if (n < 0 || n > num)
+        if (n < 1 || n > num)
             throw std::invalid_argument("Incorrect number");
     }
 
